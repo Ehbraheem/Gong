@@ -4,12 +4,12 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import static com.example.usr.scheduler.data.ReminderContract.REMINDER_BODY;
-import static com.example.usr.scheduler.data.ReminderContract.REMINDER_DATE;
-import static com.example.usr.scheduler.data.ReminderContract.REMINDER_TITLE;
-import static com.example.usr.scheduler.data.ReminderContract.REMINDER_TYPE;
+import static com.example.usr.scheduler.data.ReminderContract.Columns.REMINDER_BODY;
+import static com.example.usr.scheduler.data.ReminderContract.Columns.REMINDER_DATE;
+import static com.example.usr.scheduler.data.ReminderContract.Columns.REMINDER_TITLE;
+import static com.example.usr.scheduler.data.ReminderContract.Columns.REMINDER_TYPE;
 import static com.example.usr.scheduler.data.ReminderContract.TABLE_NAME;
-import static com.example.usr.scheduler.data.ReminderContract._ID;
+import static com.example.usr.scheduler.data.ReminderContract.Columns._ID;
 
 public class ReminderSQLite extends SQLiteOpenHelper {
 
