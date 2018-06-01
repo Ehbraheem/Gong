@@ -4,6 +4,8 @@ public final class ReminderContract {
 
     public static final String TABLE_NAME = "reminders";
 
+    public static final String _ID = "id";
+
     public static final String REMINDER_TITLE = "title";
 
     public static final String REMINDER_DATE = "date";
