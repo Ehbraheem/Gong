@@ -20,6 +20,9 @@
             </intent-filter>
         </activity>
 
+        <service android:name=".service.ReminderService"
+            android:exported="false" />
+
         <provider
             android:authorities="com.example.usr.scheduler"
             android:name=".data.ReminderProvider"
