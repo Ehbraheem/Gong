@@ -122,8 +122,34 @@ public class ReminderProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(Uri uri, String s, String[] strings) {
-        return 0;
+    public int delete(@NonNull Uri uri, @Nullable String selection,
+                      @Nullable String[] selectionArgs) {
+
+        int numDeleted = 0;
+
+        switch (matcher.match(uri)) {
+
+            case SINGLE_REMINDER:
+
+                final SQLiteDatabase db = mReminderSQLite.getWritableDatabase();
+                String reminderId = uri.getLastPathSegment();
+                String[] args = makeSelectionArgs(reminderId);
+                String condition = makeSelection(ReminderContract.Columns._ID);
+
+                numDeleted = db.delete(TABLE_NAME,
+                        condition,
+                        args);
+
+                break;
+
+            default:
+
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+        if (numDeleted > 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return numDeleted;
     }
 
     @Override
