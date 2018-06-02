@@ -4,7 +4,10 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import static com.example.usr.scheduler.data.ReminderContract.CONTENT_AUTHORITY;
 import static com.example.usr.scheduler.data.ReminderContract.TABLE_NAME;
@@ -34,9 +37,51 @@ public class ReminderProvider extends ContentProvider {
         return true;
     }
 
+    @Nullable
     @Override
-    public Cursor query(Uri uri, String[] strings, String s, String[] strings1, String s1) {
-        return null;
+    public Cursor query(@NonNull Uri uri, @Nullable String[] projection,
+                        @Nullable String selection, @Nullable String[] selectionArgs,
+                        @Nullable String sortOrder) {
+        final SQLiteDatabase db;
+        int match = matcher.match(uri);
+        Cursor cursor;
+
+        switch (match) {
+            case REMINDERS:
+                db = mReminderSQLite.getReadableDatabase();
+                cursor = db.query(TABLE_NAME,
+                                  projection,
+                                  selection,
+                                  selectionArgs,
+                                  null,
+                                  null,
+                                  sortOrder);
+                break;
+
+            case SINGLE_REMINDER:
+                db = mReminderSQLite.getReadableDatabase();
+                String reminderId = uri.getLastPathSegment();
+                String[] args = makeSelectionArgs(ReminderContract.Columns._ID);
+                String select = makeSelection(reminderId);
+
+
+                cursor = cursor = db.query(TABLE_NAME,
+                        projection,
+                        select,
+                        args,
+                        null,
+                        null,
+                        sortOrder);
+                break;
+
+                default:
+
+                    throw new UnsupportedOperationException("Unknown uri: " + uri);
+
+        }
+
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
+        return cursor;
     }
 
     @Override
@@ -57,5 +102,14 @@ public class ReminderProvider extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues contentValues, String s, String[] strings) {
         return 0;
+    }
+
+    @NonNull
+    private String[] makeSelectionArgs(Object obj) {
+        return new String[]{String.valueOf(obj)};
+    }
+
+    private String makeSelection(String criteria) {
+        return criteria + " = ? ";
     }
 }
