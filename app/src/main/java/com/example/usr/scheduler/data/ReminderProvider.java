@@ -10,6 +10,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import static com.example.usr.scheduler.data.ReminderContract.CONTENT_AUTHORITY;
+import static com.example.usr.scheduler.data.ReminderContract.CONTENT_DIR_TYPE;
+import static com.example.usr.scheduler.data.ReminderContract.CONTENT_ITEM_TYPE;
 import static com.example.usr.scheduler.data.ReminderContract.TABLE_NAME;
 
 public class ReminderProvider extends ContentProvider {
@@ -65,7 +67,7 @@ public class ReminderProvider extends ContentProvider {
                 String select = makeSelection(reminderId);
 
 
-                cursor = cursor = db.query(TABLE_NAME,
+                cursor = db.query(TABLE_NAME,
                         projection,
                         select,
                         args,
@@ -84,9 +86,30 @@ public class ReminderProvider extends ContentProvider {
         return cursor;
     }
 
+    @Nullable
     @Override
-    public String getType(Uri uri) {
-        return null;
+    public String getType(@NonNull Uri uri) {
+        int match = matcher.match(uri);
+        String type;
+
+        switch (match) {
+            case REMINDERS:
+
+                type = CONTENT_DIR_TYPE;
+                break;
+
+            case SINGLE_REMINDER:
+
+                type = CONTENT_ITEM_TYPE;
+                break;
+
+            default:
+
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+
+        }
+
+        return type;
     }
 
     @Nullable
@@ -158,11 +181,11 @@ public class ReminderProvider extends ContentProvider {
     }
 
     @NonNull
-    private String[] makeSelectionArgs(Object obj) {
+    private String[] makeSelectionArgs(@NonNull Object obj) {
         return new String[]{String.valueOf(obj)};
     }
 
-    private String makeSelection(String criteria) {
+    private String makeSelection(@NonNull String criteria) {
         return criteria + " = ? ";
     }
 }
