@@ -89,9 +89,36 @@ public class ReminderProvider extends ContentProvider {
         return null;
     }
 
+    @Nullable
     @Override
-    public Uri insert(Uri uri, ContentValues contentValues) {
-        return null;
+    public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
+
+        long id = 0;
+        Uri returnUri = null;
+
+        switch (matcher.match(uri)) {
+
+            case REMINDERS:
+                final SQLiteDatabase db = mReminderSQLite.getWritableDatabase();
+
+                id = db.insert(TABLE_NAME,
+                        null,
+                        values);
+
+
+                if (id > 0) {
+                    returnUri = ReminderContract.buildUriWithId(id);
+                }
+
+                break;
+
+            default:
+
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+
+        }
+        getContext().getContentResolver().notifyChange(returnUri, null);
+        return  returnUri;
     }
 
     @Override
