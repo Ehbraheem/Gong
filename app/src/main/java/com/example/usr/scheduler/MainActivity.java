@@ -15,10 +15,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.usr.scheduler.data.ReminderAdapter;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private RecyclerView mReminders;
+    private ReminderAdapter mReminderAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +57,9 @@ public class MainActivity extends AppCompatActivity
         mReminders = (RecyclerView) findViewById(R.id.reminders);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         mReminders.setLayoutManager(layoutManager);
-        mRecipeAdapter = new RecipeAdapter(mContext);
-        mRecipeListView.setAdapter(mRecipeAdapter);
-        mRecipeListView.setHasFixedSize(true);
+        mReminderAdapter = new ReminderAdapter();
+        mReminders.setAdapter(mReminderAdapter);
+        mReminders.setHasFixedSize(true);
     }
 
     @Override
