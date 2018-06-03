@@ -3,6 +3,8 @@ package com.example.usr.scheduler;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,6 +17,8 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private RecyclerView mReminders;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +44,19 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        setUpReminderList();
+
+
+    }
+
+    private void setUpReminderList() {
+        mReminders = (RecyclerView) findViewById(R.id.reminders);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        mReminders.setLayoutManager(layoutManager);
+        mRecipeAdapter = new RecipeAdapter(mContext);
+        mRecipeListView.setAdapter(mRecipeAdapter);
+        mRecipeListView.setHasFixedSize(true);
     }
 
     @Override
