@@ -1,0 +1,28 @@
+{
+  "reminders": [
+    {
+      "title": "Adam's Birthday",
+      "date": "06-01-2018",
+      "type": "Birthday",
+      "body": "Happy birthday bro"
+    },
+    {
+      "title": "Habeeb's Birthday",
+      "date": "01-02-2018",
+      "type": "Birthday",
+      "body": "Happy birthday bro"
+    },
+    {
+      "title": "Hassan's Birthday",
+      "date": "12-04-2018",
+      "type": "Birthday",
+      "body": "Happy birthday bro"
+    },
+    {
+      "title": "Saheed's Birthday",
+      "date": "07-31-2018",
+      "type": "Birthday",
+      "body": "Happy birthday bro"
+    }
+  ]
+}
