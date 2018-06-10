@@ -28,7 +28,7 @@ import static com.example.usr.scheduler.data.ReminderContract.Columns._ID;
 public class ReminderSQLite extends SQLiteOpenHelper {
 
     public static final String DB_NAME = "reminder.db";
-    public static final int DB_VERSION = 0;
+    public static final int DB_VERSION = 1;
 
     public static final String TAG = ReminderSQLite.class.getName();
 
