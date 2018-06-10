@@ -1,8 +1,14 @@
 package com.example.usr.scheduler;
 
+import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -17,11 +23,15 @@ import android.view.MenuItem;
 
 import com.example.usr.scheduler.data.ReminderAdapter;
 
+import static com.example.usr.scheduler.data.ReminderContract.CONTENT_URI;
+
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, LoaderManager.LoaderCallbacks<Cursor>{
 
     private RecyclerView mReminders;
     private ReminderAdapter mReminderAdapter;
+
+    public static final int REMINDERS_LOADER = 3456;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,5 +127,42 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @NonNull
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
+        return new CursorLoader(this, CONTENT_URI, null, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+        switch (loader.getId()) {
+
+            case REMINDERS_LOADER:
+                if (data != null) {
+                    mReminderAdapter.swapCursor(data);
+                }
+                break;
+
+            default:
+                throw new UnsupportedOperationException(String.format("No loader with %d implemented", loader.getId()));
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setUpLoader(REMINDERS_LOADER);
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+
+    }
+
+
+    void setUpLoader(int loaderId) {
+        getSupportLoaderManager().restartLoader(REMINDERS_LOADER, null, null);
     }
 }
