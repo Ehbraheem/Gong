@@ -163,6 +163,6 @@ public class MainActivity extends AppCompatActivity
 
 
     void setUpLoader(int loaderId) {
-        getSupportLoaderManager().restartLoader(REMINDERS_LOADER, null, null);
+        getSupportLoaderManager().restartLoader(REMINDERS_LOADER, null, this);
     }
 }
